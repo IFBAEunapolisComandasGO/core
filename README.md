@@ -1,3 +1,3 @@
 # Comandas GO site oficial 
 
-Aguarde, o site está sendo preparado para você!
+Aguarde, à aplicação está sendo preparado para você!
