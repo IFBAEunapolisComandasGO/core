@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{pedidoBean.id}'/>
+		<f:event type="preRenderView" listener='#{pedidoBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Create Pedido"/>
+
+	<ui:define name="header">
+		Pedido
+	</ui:define>
+
+	<ui:define name="subheader">
+		<c:choose>
+			<c:when test='#{!empty pedidoBean.id}'>
+				Edit existing Pedido
+			</c:when>
+			<c:otherwise>
+				Create a new Pedido
+			</c:otherwise>
+		</c:choose>
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="create">
+			<h:messages globalOnly="true" styleClass="error"/>
+
+			<h:panelGrid columnClasses="label,component,required" columns="3">
+				<h:outputLabel for="pedidoBeanPedidoItens" value="Itens:"/>
+				<h:panelGrid columnClasses="label,component,required" columns="3" id="pedidoBeanPedidoItens">
+					<h:outputLabel for="pedidoBeanPedidoItensNome" value="Nome:"/>
+					<h:panelGroup>
+						<h:inputText id="pedidoBeanPedidoItensNome" value="#{pedidoBean.pedido.itens.nome}"/>
+						<h:message for="pedidoBeanPedidoItensNome" styleClass="error"/>
+					</h:panelGroup>
+					<h:outputText/>
+					<h:outputLabel for="pedidoBeanPedidoItensDescricao" value="Descricao:"/>
+					<h:panelGroup>
+						<h:inputText id="pedidoBeanPedidoItensDescricao" value="#{pedidoBean.pedido.itens.descricao}"/>
+						<h:message for="pedidoBeanPedidoItensDescricao" styleClass="error"/>
+					</h:panelGroup>
+					<h:outputText/>
+					<h:outputLabel for="pedidoBeanPedidoItensPreco" value="Preco:"/>
+					<h:panelGroup>
+						<h:inputText id="pedidoBeanPedidoItensPreco" value="#{pedidoBean.pedido.itens.preco}"/>
+						<h:message for="pedidoBeanPedidoItensPreco" styleClass="error"/>
+					</h:panelGroup>
+					<h:outputText/>
+					<h:outputLabel for="pedidoBeanPedidoItensBebida" value="Bebida:"/>
+					<h:panelGroup>
+						<h:selectBooleanCheckbox id="pedidoBeanPedidoItensBebida" value="#{pedidoBean.pedido.itens.bebida}"/>
+						<h:message for="pedidoBeanPedidoItensBebida" styleClass="error"/>
+					</h:panelGroup>
+					<h:outputText/>
+				</h:panelGrid>
+				<h:outputText/>
+			</h:panelGrid>
+
+			<div class="buttons">
+				<h:commandLink value="Save" action='#{pedidoBean.update}' styleClass="btn btn-primary"/>
+				<c:choose>
+					<c:when test='#{!empty pedidoBean.id}'>
+						<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
+							<f:param name="id" value='#{pedidoBean.id}'/>
+						</h:link>
+						<h:commandLink value="Delete" action='#{pedidoBean.delete}' styleClass="btn btn-primary"/>
+					</c:when>
+					<c:otherwise>
+						<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
