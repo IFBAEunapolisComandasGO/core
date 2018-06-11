@@ -37,20 +37,21 @@ import org.barzinhogo.model.Estabelecimento;
 @Stateful
 @ConversationScoped
 public class EstabelecimentoBean implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     /*
     * Support creating and retrieving Estabelecimento entities
-    */
+     */
     private Long id;
     private Estabelecimento estabelecimento;
-    
+
     public Long getId() {
         return this.id;
     }
+
     public void setId(Long id) {
         this.id = id;
-    }    
+    }
 
     /**
      * @return the estabelecimento
@@ -65,20 +66,20 @@ public class EstabelecimentoBean implements Serializable {
     public void setEstabelecimento(Estabelecimento estabelecimento) {
         this.estabelecimento = estabelecimento;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
-    
     @Inject
     private Conversation conversation;
-    
+
     @PersistenceContext(unitName = "barzinhoGo-persistence-unit", type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
-    
+
     public String create() {
         this.conversation.begin();
         this.conversation.setTimeout(1800000L);
         return "create?faces-redirect=true";
     }
+
     public void retrieve() {
         if (FacesContext.getCurrentInstance().isPostback()) {
             return;
@@ -93,9 +94,11 @@ public class EstabelecimentoBean implements Serializable {
             this.estabelecimento = findById(getId());
         }
     }
+
     public Estabelecimento findById(Long id) {
         return this.entityManager.find(Estabelecimento.class, id);
     }
+
     /*
      * Support updating and deleting Cliente entities
      */
@@ -114,6 +117,7 @@ public class EstabelecimentoBean implements Serializable {
             return null;
         }
     }
+
     public String delete() {
         this.conversation.end();
         try {
@@ -126,39 +130,44 @@ public class EstabelecimentoBean implements Serializable {
             return null;
         }
     }
-    
+
     /*
      * Support searching Cliente entities with pagination
      */
-    
     private int page;
     private long count;
     private List<Estabelecimento> pageItems;
-    
+
     private Estabelecimento example = new Estabelecimento();
-    
+
     public int getPage() {
         return this.page;
     }
+
     public void setPage(int page) {
         this.page = page;
     }
+
     public int getPageSize() {
         return 10;
     }
+
     public Estabelecimento getExample() {
         return this.example;
     }
+
     public void setExample(Estabelecimento example) {
         this.example = example;
     }
+
     public String search() {
         this.page = 0;
         return null;
     }
+
     public void paginate() {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        
+
         // Populate this.count
         CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
         Root<Estabelecimento> root = countCriteria.from(Estabelecimento.class);
@@ -172,35 +181,39 @@ public class EstabelecimentoBean implements Serializable {
         query.setFirstResult(this.page * getPageSize()).setMaxResults(getPageSize());
         this.pageItems = query.getResultList();
     }
+
     private Predicate[] getSearchPredicates(Root<Estabelecimento> root) {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-	List<Predicate> predicatesList = new ArrayList<Predicate>();
-        
+        List<Predicate> predicatesList = new ArrayList<Predicate>();
+
         String nome = this.example.getNome();
         if (nome != null && !"".equals(nome)) {
-            predicatesList.add(builder.like(builder.lower(root.<String> get("nome")),'%' + nome.toLowerCase() + '%'));
+            predicatesList.add(builder.like(builder.lower(root.<String>get("nome")), '%' + nome.toLowerCase() + '%'));
         }
         return predicatesList.toArray(new Predicate[predicatesList.size()]);
     }
+
     public List<Estabelecimento> getPageItems() {
         return this.pageItems;
     }
+
     public long getCount() {
         return this.count;
     }
+
     /*
      * Support listing and POSTing back Cliente entities (e.g. from inside an
      * HtmlSelectOneMenu)
      */
-    
+
     public List<Estabelecimento> getAll() {
         CriteriaQuery<Estabelecimento> criteria = this.entityManager.getCriteriaBuilder().createQuery(Estabelecimento.class);
         return this.entityManager.createQuery(criteria.select(criteria.from(Estabelecimento.class))).getResultList();
     }
-    
+
     @Resource
     private SessionContext sessionContext;
-    
+
     public Converter getConverter() {
         final EstabelecimentoBean ejbProxy = this.sessionContext.getBusinessObject(EstabelecimentoBean.class);
         return new Converter() {
@@ -208,6 +221,7 @@ public class EstabelecimentoBean implements Serializable {
             public Object getAsObject(FacesContext context, UIComponent component, String value) {
                 return ejbProxy.findById(Long.valueOf(value));
             }
+
             @Override
             public String getAsString(FacesContext context, UIComponent component, Object value) {
                 if (value == null) {
@@ -221,10 +235,11 @@ public class EstabelecimentoBean implements Serializable {
      * Support adding children to bidirectional, one-to-many tables
      */
     private Estabelecimento add = new Estabelecimento();
-    
+
     public Estabelecimento getAdd() {
         return this.add;
     }
+
     public Estabelecimento getAdded() {
         Estabelecimento added = this.add;
         this.add = new Estabelecimento();

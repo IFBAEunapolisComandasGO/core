@@ -15,14 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
-
 /**
  *
  * @author Jonathas
  */
 @Entity
 public class Mesa implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,13 +30,13 @@ public class Mesa implements Serializable {
     @Version
     @Column(name = "version")
     private int version;
-    
+
     @Column(nullable = false)
     private int qrCode;
-    
+
     private Map<Cliente, Pedido> pedidos;
     private List<Cliente> clientes;
-    
+
     private boolean disponivel;
 
     public Long getId() {
@@ -47,7 +46,7 @@ public class Mesa implements Serializable {
     public void setId(final Long id) {
         this.id = id;
     }
-    
+
     /**
      * @return the version
      */
@@ -96,7 +95,7 @@ public class Mesa implements Serializable {
     public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
     }
-    
+
     /**
      * @return the disponivel
      */
@@ -110,7 +109,7 @@ public class Mesa implements Serializable {
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -127,7 +126,7 @@ public class Mesa implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;

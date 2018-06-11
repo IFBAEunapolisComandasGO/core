@@ -37,19 +37,21 @@ import org.barzinhogo.model.Mesa;
 @Stateful
 @ConversationScoped
 public class MesaBean implements Serializable {
+
     /*
      * Support creating and retrieving Estabelecimento entities
      */
     private Long id;
     private Mesa mesa;
     private boolean disponivel;
-    
+
     public Long getId() {
         return this.id;
     }
+
     public void setId(Long id) {
         this.id = id;
-    }    
+    }
 
     /**
      * @return the mesa
@@ -64,7 +66,7 @@ public class MesaBean implements Serializable {
     public void setMesa(Mesa mesa) {
         this.mesa = mesa;
     }
-    
+
     /**
      * @return the disponivel
      */
@@ -78,19 +80,20 @@ public class MesaBean implements Serializable {
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     @Inject
     private Conversation conversation;
-    
+
     @PersistenceContext(unitName = "barzinhoGo-persistence-unit", type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
-    
+
     public String create() {
         this.conversation.begin();
         this.conversation.setTimeout(1800000L);
         return "create?faces-redirect=true";
     }
+
     public void retrieve() {
         if (FacesContext.getCurrentInstance().isPostback()) {
             return;
@@ -105,9 +108,11 @@ public class MesaBean implements Serializable {
             this.mesa = findById(getId());
         }
     }
+
     public Mesa findById(Long id) {
         return this.entityManager.find(Mesa.class, id);
     }
+
     /*
      * Support updating and deleting Cliente entities
      */
@@ -126,6 +131,7 @@ public class MesaBean implements Serializable {
             return null;
         }
     }
+
     public String delete() {
         this.conversation.end();
         try {
@@ -138,39 +144,44 @@ public class MesaBean implements Serializable {
             return null;
         }
     }
-    
+
     /*
      * Support searching Cliente entities with pagination
      */
-    
     private int page;
     private long count;
     private List<Mesa> pageItems;
-    
+
     private Mesa example = new Mesa();
-    
+
     public int getPage() {
         return this.page;
     }
+
     public void setPage(int page) {
         this.page = page;
     }
+
     public int getPageSize() {
         return 10;
     }
+
     public Mesa getExample() {
         return this.example;
     }
+
     public void setExample(Mesa example) {
         this.example = example;
     }
+
     public String search() {
         this.page = 0;
         return null;
     }
+
     public void paginate() {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        
+
         // Populate this.count
         CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
         Root<Mesa> root = countCriteria.from(Mesa.class);
@@ -184,31 +195,35 @@ public class MesaBean implements Serializable {
         query.setFirstResult(this.page * getPageSize()).setMaxResults(getPageSize());
         this.pageItems = query.getResultList();
     }
+
     private Predicate[] getSearchPredicates(Root<Mesa> root) {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-	List<Predicate> predicatesList = new ArrayList<Predicate>();
-        
+        List<Predicate> predicatesList = new ArrayList<Predicate>();
+
         return predicatesList.toArray(new Predicate[predicatesList.size()]);
     }
+
     public List<Mesa> getPageItems() {
         return this.pageItems;
     }
+
     public long getCount() {
         return this.count;
     }
+
     /*
      * Support listing and POSTing back Cliente entities (e.g. from inside an
      * HtmlSelectOneMenu)
      */
-    
+
     public List<Mesa> getAll() {
         CriteriaQuery<Mesa> criteria = this.entityManager.getCriteriaBuilder().createQuery(Mesa.class);
         return this.entityManager.createQuery(criteria.select(criteria.from(Mesa.class))).getResultList();
     }
-    
+
     @Resource
     private SessionContext sessionContext;
-    
+
     public Converter getConverter() {
         final MesaBean ejbProxy = this.sessionContext.getBusinessObject(MesaBean.class);
         return new Converter() {
@@ -216,6 +231,7 @@ public class MesaBean implements Serializable {
             public Object getAsObject(FacesContext context, UIComponent component, String value) {
                 return ejbProxy.findById(Long.valueOf(value));
             }
+
             @Override
             public String getAsString(FacesContext context, UIComponent component, Object value) {
                 if (value == null) {
@@ -229,10 +245,11 @@ public class MesaBean implements Serializable {
      * Support adding children to bidirectional, one-to-many tables
      */
     private Mesa add = new Mesa();
-    
+
     public Mesa getAdd() {
         return this.add;
     }
+
     public Mesa getAdded() {
         Mesa added = this.add;
         this.add = new Mesa();

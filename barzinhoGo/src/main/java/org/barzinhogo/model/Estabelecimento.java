@@ -27,12 +27,11 @@ public class Estabelecimento implements Serializable {
     private Long id;
     @Column(name = "version")
     private int version;
-    
+
     @Column(nullable = false)
     private String nome;
-    
+
     /*private List<Funcionario> funcionarios;*/
-    
     private List<Item> produtos;
 
     public Long getId() {
@@ -70,7 +69,7 @@ public class Estabelecimento implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
     /**
      * @return the funcionarios
      */
@@ -82,11 +81,11 @@ public class Estabelecimento implements Serializable {
     /**
      * @param funcionarios the funcionarios to set
      */
-    /*
+ /*
     public void setProdutos(List<Funcionario> funcionarios) {
         this.funcionarios = funcionarios;
     }
-    */
+     */
     //
     /**
      * @return the produtos
@@ -101,7 +100,7 @@ public class Estabelecimento implements Serializable {
     public void setProdutos(List<Item> produtos) {
         this.produtos = produtos;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -118,7 +117,7 @@ public class Estabelecimento implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -126,12 +125,13 @@ public class Estabelecimento implements Serializable {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
-    
+
     @Override
     public String toString() {
         String result = getClass().getSimpleName() + " ";
-        if (nome != null && !nome.trim().isEmpty())
-        result += "nome: " + nome;
+        if (nome != null && !nome.trim().isEmpty()) {
+            result += "nome: " + nome;
+        }
         return result;
     }
 }
