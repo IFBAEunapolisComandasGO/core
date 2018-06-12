@@ -7,11 +7,16 @@ package org.barzinhogo.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 /**
  *
@@ -25,14 +30,18 @@ public class Estabelecimento implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
+    @Version
     @Column(name = "version")
     private int version;
 
     @Column(nullable = false)
     private String nome;
 
-    /*private List<Funcionario> funcionarios;*/
-    private List<Item> produtos;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+	private List<Funcionario> funcionarios;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	private List<Produto> produtos;
 
     public Long getId() {
         return this.id;
@@ -73,33 +82,32 @@ public class Estabelecimento implements Serializable {
     /**
      * @return the funcionarios
      */
-    /*
     public List<Funcionario> getFuncionarios() {
-        return funcionarios;
+        return this.funcionarios;
     }
 
     /**
      * @param funcionarios the funcionarios to set
      */
- /*
-    public void setProdutos(List<Funcionario> funcionarios) {
+    public void setFuncionarios(List<Funcionario> funcionarios) {
         this.funcionarios = funcionarios;
     }
-     */
-    //
+
     /**
      * @return the produtos
      */
-    public List<Item> getProdutos() {
-        return produtos;
+    public List<Produto> getProdutos() {
+        return this.produtos;
     }
 
     /**
      * @param produtos the produtos to set
      */
-    public void setProdutos(List<Item> produtos) {
+    public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
     }
+    
+    
 
     @Override
     public boolean equals(Object obj) {
