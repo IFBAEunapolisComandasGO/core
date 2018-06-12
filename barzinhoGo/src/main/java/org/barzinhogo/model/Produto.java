@@ -17,8 +17,8 @@ import javax.persistence.Table;
  * @author Adriano
  */
 @Entity
-@Table(name = "produtos")
-public class Produtos implements Serializable {
+@Table(name = "produto")
+public class Produto implements Serializable {
 
     /**
      *
@@ -86,7 +86,7 @@ public class Produtos implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Produtos other = (Produtos) obj;
+        Produto other = (Produto) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;
