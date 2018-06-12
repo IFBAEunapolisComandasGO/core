@@ -28,10 +28,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.barzinhogo.model.Estabelecimento;
+import org.barzinhogo.model.Funcionario;
+import org.barzinhogo.model.Produto;
 
 /**
  *
  * @author Jonathas
+ * @author Adriano
  */
 @Named
 @Stateful
@@ -132,7 +135,7 @@ public class EstabelecimentoBean implements Serializable {
     }
 
     /*
-     * Support searching Cliente entities with pagination
+     * Support searching Estabelecimento entities with pagination
      */
     private int page;
     private long count;
@@ -190,6 +193,17 @@ public class EstabelecimentoBean implements Serializable {
         if (nome != null && !"".equals(nome)) {
             predicatesList.add(builder.like(builder.lower(root.<String>get("nome")), '%' + nome.toLowerCase() + '%'));
         }
+
+		List<Funcionario> funcionarios = this.example.getFuncionarios();
+		if (funcionarios != null) {
+			predicatesList.add(builder.equal(root.get("funcionarios"),
+					funcionarios));
+		}
+		
+		List<Produto> produtos = this.example.getProdutos();
+		if (produtos != null) {
+			predicatesList.add(builder.equal(root.get("produtos"), produtos));
+		}
         return predicatesList.toArray(new Predicate[predicatesList.size()]);
     }
 
@@ -202,7 +216,7 @@ public class EstabelecimentoBean implements Serializable {
     }
 
     /*
-     * Support listing and POSTing back Cliente entities (e.g. from inside an
+     * Support listing and POSTing back Estabelecimento entities (e.g. from inside an
      * HtmlSelectOneMenu)
      */
 
